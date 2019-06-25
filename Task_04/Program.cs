@@ -17,9 +17,16 @@ namespace Task_04
             var wakeUp = DateTime.Now.AddSeconds(10);
             foreach (DateTime value in AlarmClockTimer(wakeUp))
             {
-
                 Console.WriteLine((wakeUp - value).ToString(@"dd\.hh\:mm\:ss"));
                 Thread.Sleep(1000);
+            }
+        }
+
+        private static IEnumerable<DateTime> AlarmClockTimer(DateTime wakeUp)
+        {
+            while ((DateTime.Now - wakeUp).TotalSeconds <= 0)
+            {
+                yield return DateTime.Now;
             }
         }
     }

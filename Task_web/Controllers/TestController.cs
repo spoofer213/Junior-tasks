@@ -17,7 +17,65 @@ namespace Task_web.Controllers
         {
             _testModels = testModels;
         }
-        
+
+        [HttpPost]
+        public async Task<IActionResult> CreateTest(TestModel testModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var check = _testModels.Where(w => w.Id == testModel.Id).FirstOrDefault();
+                if(check == null)
+                {
+                    _testModels.Add(testModel);
+                }
+                return CreatedAtAction(nameof(ReadTest), new { id = testModel.Id });
+            }
+            return BadRequest();
+            
+        }
+
+
+        [HttpGet("{id}")]
+        private async Task<ActionResult<TestModel>> ReadTest(Guid id)
+        {
+            var testModel = _testModels.FirstOrDefault(f => f.Id == id);
+            if(testModel == null)
+            {
+                return NotFound();
+            }
+            return testModel;
+        }
+
+
+
+
+        [HttpPut("{id}")]
+        private async Task<ActionResult> UpdateTest(Guid id,TestModel testModel)
+        {
+            if(id != testModel.Id)
+            {
+                return BadRequest();
+            }
+
+            var oldModel = _testModels.FirstOrDefault(f => f.Id == id);
+            oldModel.Name = testModel.Name;
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteTest(Guid id)
+        {
+            var deleteTest = _testModels.Where(w => w.Id == id).FirstOrDefault();
+            if(deleteTest == null)
+            {
+                return NotFound();
+            }
+
+            _testModels.Remove(deleteTest);
+            return NoContent();
+        }
+
+
 
         /*
          *

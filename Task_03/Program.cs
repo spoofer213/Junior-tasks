@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TaskThree
 {
@@ -17,30 +18,26 @@ namespace TaskThree
         Delete
         
     }
+    
 
     class Program
     {
+        public static Dictionary<ActionType, Action<ActionType>> typesWithActions = new Dictionary<ActionType, Action<ActionType>>()
+            {
+                {ActionType.Create, CreateMethod},
+                {ActionType.Read, ReadMethod},
+                {ActionType.Update, UpdateMethod},
+                {ActionType.Delete, DeleteMethod},
+            };
         static void Main(string[] args)
         {
             var type = ActionType.Read;
 
-            switch (type)
-            {
-                case ActionType.Create:
-                    CreateMethod(type);
-                    break;
-                case ActionType.Read:
-                    ReadMethod(type);
-                    break;
-                case ActionType.Update:
-                    UpdateMethod(type);
-                    break;
-                case ActionType.Delete:
-                    DeleteMethod(type);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+            if (typesWithActions.ContainsKey(type)){
+                typesWithActions[type](type);                
             }
+            
+            Console.ReadKey();
         }
 
         private static void CreateMethod(ActionType type)

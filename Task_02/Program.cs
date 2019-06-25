@@ -28,7 +28,17 @@ namespace TaskTwo
     {
         public void WriteExecutor()
         {
-            Console.WriteLine("I base Executor!");
+            Console.WriteLine("I base executor");            
+        }
+
+        void IOneExecutor.WriteExecutor()
+        {
+            Console.WriteLine("I One executor");
+        }
+
+        void ITwoExecutor.WriteExecutor()
+        {
+            Console.WriteLine("I Two executor");
         }
     }
 
@@ -40,7 +50,9 @@ namespace TaskTwo
         {
             var @base = new Base();
             @base.WriteExecutor();
-            
+            ((IOneExecutor)(@base)).WriteExecutor();
+            ((ITwoExecutor)(@base)).WriteExecutor();
+            Console.ReadKey();
         }
     }
 }
